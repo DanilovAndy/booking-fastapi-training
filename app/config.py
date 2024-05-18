@@ -1,8 +1,12 @@
-from pydantic_settings import BaseSettings, SettingsConfigDict
+import os
+
+from pydantic_settings import BaseSettings, SettingsConfigDict, DotEnvSettingsSource
 
 
 class Settings(BaseSettings):
-    model_config = SettingsConfigDict(env_file='../.env', env_file_encoding='utf-8', extra='ignore')
+    model_config = SettingsConfigDict(env_file=os.path.join(os.path.dirname(__file__), '../.env'),
+                                      env_file_encoding='utf-8', extra='ignore')
+
     DB_HOST: str
     DB_PORT: int
     DB_USER: str
@@ -10,5 +14,4 @@ class Settings(BaseSettings):
     DB_NAME: str
 
 
-settings = Settings(_env_file='../.env', _env_file_encoding='utf-8')
-
+settings = Settings()
