@@ -1,10 +1,16 @@
+from contextlib import asynccontextmanager
+
 from fastapi import FastAPI, Query, Depends
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.staticfiles import StaticFiles
 
-from typing import Annotated
+from typing import Annotated, AsyncIterator
 from datetime import date
 from pydantic import BaseModel
+
+from fastapi_cache import FastAPICache
+from fastapi_cache.backends.redis import RedisBackend
+from redis import asyncio as aioredis
 
 from app.bookings.router import router as router_bookings
 from app.users.router import router as router_users
@@ -13,7 +19,15 @@ from app.hotels.rooms.router import router as router_rooms
 from app.pages.router import router as router_pages
 from app.images.router import router as router_image
 
-app = FastAPI()
+
+@asynccontextmanager
+async def lifespan(_: FastAPI) -> AsyncIterator[None]:
+    redis = aioredis.from_url("redis://localhost:6379")
+    FastAPICache.init(RedisBackend(redis), prefix="cache")
+    yield
+
+
+app = FastAPI(lifespan=lifespan)
 
 app.mount("/static", StaticFiles(directory="app/static"), "static")
 
