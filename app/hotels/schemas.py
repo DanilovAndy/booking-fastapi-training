@@ -16,7 +16,7 @@ class SHotel(BaseModel):
 
 
 class SHotelInfo(SHotel):
-    rooms_left: int
+    number_of_rooms_left: int
 
     class Config:
         orm_mode = True
