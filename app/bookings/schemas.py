@@ -15,3 +15,8 @@ class SBooking(BaseModel):
 
     class Config:
         from_attributes = True
+
+
+class SNewBooking(BaseModel):
+    date_from: date
+    date_to: date
