@@ -73,6 +73,6 @@ class BookingDAO(BaseDAO):
 
                 new_booking = await session.execute(add_booking)
                 await session.commit()
-                return new_booking.mappings().all()
+                return new_booking.scalar()
             else:
                 return None
