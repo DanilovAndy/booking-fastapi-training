@@ -12,8 +12,12 @@ from fastapi_cache import FastAPICache
 from fastapi_cache.backends.redis import RedisBackend
 from redis import asyncio as aioredis
 
+from sqladmin import Admin
+
+from app.admin_panel.views import UsersAdmin, BookingsAdmin, HotelsAdmin, RoomsAdmin
 from app.bookings.router import router as router_bookings
 from app.config import settings
+from app.database import engine
 from app.users.router import router as router_users
 from app.hotels.router import router as router_hotels
 from app.hotels.rooms.router import router as router_rooms
@@ -52,6 +56,12 @@ app.add_middleware(
                    "Access-Control-Allow-Origin",
                    "Authorization"],
 )
+
+admin = Admin(app, engine)
+admin.add_view(UsersAdmin)
+admin.add_view(BookingsAdmin)
+admin.add_view(HotelsAdmin)
+admin.add_view(RoomsAdmin)
 
 
 class HotelsSearchArgs:
