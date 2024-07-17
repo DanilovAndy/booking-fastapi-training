@@ -15,6 +15,7 @@ from redis import asyncio as aioredis
 from sqladmin import Admin
 
 from app.admin_panel.views import UsersAdmin, BookingsAdmin, HotelsAdmin, RoomsAdmin
+from app.admin_panel.auth import authentication_backend
 from app.bookings.router import router as router_bookings
 from app.config import settings
 from app.database import engine
@@ -57,7 +58,7 @@ app.add_middleware(
                    "Authorization"],
 )
 
-admin = Admin(app, engine)
+admin = Admin(app, engine, authentication_backend=authentication_backend)
 admin.add_view(UsersAdmin)
 admin.add_view(BookingsAdmin)
 admin.add_view(HotelsAdmin)
