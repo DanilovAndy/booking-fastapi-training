@@ -1,4 +1,4 @@
-from typing import Optional
+from typing import Optional, Union
 
 from sqladmin.authentication import AuthenticationBackend
 from starlette.requests import Request
@@ -26,7 +26,7 @@ class AdminAuth(AuthenticationBackend):
         request.session.clear()
         return True
 
-    async def authenticate(self, request: Request) -> Optional[RedirectResponse]:
+    async def authenticate(self, request: Request) -> Union[RedirectResponse, bool]:
         token = request.session.get("token")
 
         if not token:
@@ -35,6 +35,8 @@ class AdminAuth(AuthenticationBackend):
         user = await get_cur_user(token)
         if not user:
             return RedirectResponse(request.url_for("admin:login"), status_code=302)
+
+        return True
 
 
 authentication_backend = AdminAuth(secret_key=settings.SECRET_KEY)
