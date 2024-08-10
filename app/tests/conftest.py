@@ -13,8 +13,7 @@ from app.hotels.rooms.models import Rooms
 from app.main import app as fastapi_app
 from app.users.models import Users
 
-from fastapi.testclient import TestClient
-from httpx import AsyncClient
+from httpx import AsyncClient, ASGITransport
 
 
 @pytest.fixture(scope="session", autouse=True)
@@ -26,7 +25,7 @@ async def prepare_database():
         await conn.run_sync(Base.metadata.create_all)
 
     def open_mock_json(model: str):
-        with open(f"app/test/mock_{model}.json", encoding="utf-8") as file:
+        with open(f"app/tests/mock_{model}.json", encoding="utf-8") as file:
             return json.load(file)
 
     hotels = open_mock_json("hotels")
@@ -52,17 +51,10 @@ async def prepare_database():
         await session.commit()
 
 
-@pytest.fixture(scope="session")
-def event_loop(request):
-    """Create an instance of the default event loop for each test case."""
-    loop = asyncio.get_event_loop_policy().new_event_loop()
-    yield loop
-    loop.close()
-
-
 @pytest.fixture(scope="function")
-async def async_client():
-    async with AsyncClient(app=fastapi_app, base_url="http://test") as ac:
+async def ac():
+    """Async Client generator."""
+    async with AsyncClient(transport=ASGITransport(app=fastapi_app), base_url="http://test") as ac:
         yield ac
 
 
@@ -70,3 +62,33 @@ async def async_client():
 async def session():
     async with async_session_maker() as session:
         yield session
+
+
+@pytest.fixture(scope="function")
+async def authenticated_ac():
+    """Async auth client session generator"""
+    async with AsyncClient(transport=ASGITransport(app=fastapi_app), base_url="http://test") as ac:
+        await ac.post("/auth/login", json={
+            "email": "test@example.com",
+            "password": "test",
+        })
+        assert ac.cookies["booking_access_token"]
+        yield ac
+
+
+"""
+  Replacing the event_loop fixture with a custom implementation is deprecated
+  and will lead to errors in the future.
+  If you want to request an asyncio event loop with a scope other than function
+  scope, use the "scope" argument to the asyncio mark when marking the tests.
+  If you want to return different types of event loops, use the event_loop_policy
+  fixture.
+  
+@pytest.fixture(scope="session")
+def event_loop(request):
+    """"""Create an instance of the default event loop for each test case.""""""
+    loop = asyncio.get_event_loop_policy().new_event_loop()
+    yield loop
+    loop.close()
+    
+"""
