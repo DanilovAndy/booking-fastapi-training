@@ -4,7 +4,7 @@ from typing import List
 from fastapi import APIRouter, Query
 from fastapi_cache.decorator import cache
 
-from app.exceptions import RoomCannotBeBooked
+from app.exceptions import DateFromCannotBeAfterDateTo, CannotBookHotelForLongPeriod
 from app.hotels.dao import HotelsDAO
 from app.hotels.schemas import SHotelInfo
 
@@ -19,8 +19,8 @@ async def get_hotels_by_location_and_time(
         date_to: date = Query(..., description=f"Например, {(datetime.now() + timedelta(days=14)).date()}"),
 ) -> List[SHotelInfo]:
     if date_from > date_to:
-        raise RoomCannotBeBooked
-    if (date_to - date_from).days > 31:
-        raise RoomCannotBeBooked
+        raise DateFromCannotBeAfterDateTo
+    if (date_to - date_from).days > 90:
+        raise CannotBookHotelForLongPeriod
     hotels = await HotelsDAO.find_all(location, date_from, date_to)
     return hotels

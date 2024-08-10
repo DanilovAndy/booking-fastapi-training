@@ -42,3 +42,12 @@ class RoomCannotBeBooked(BookingException):
     status_code = status.HTTP_409_CONFLICT
     detail = "No free rooms left"
 
+
+class DateFromCannotBeAfterDateTo(BookingException):
+    status_code = status.HTTP_400_BAD_REQUEST
+    detail = "Date from cannot be after date to"
+
+
+class CannotBookHotelForLongPeriod(BookingException):
+    status_code = status.HTTP_400_BAD_REQUEST
+    detail = "Cannot book hotel for so long"
