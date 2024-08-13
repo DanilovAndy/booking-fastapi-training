@@ -1,29 +1,28 @@
 from contextlib import asynccontextmanager
+import time
+from typing import AsyncIterator
 
-from fastapi import FastAPI, Query, Depends
+import sentry_sdk
+from fastapi import FastAPI, Request
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.staticfiles import StaticFiles
-
-from typing import Annotated, AsyncIterator
-from datetime import date
-from pydantic import BaseModel
-
 from fastapi_cache import FastAPICache
 from fastapi_cache.backends.redis import RedisBackend
 from redis import asyncio as aioredis
-
 from sqladmin import Admin
 
-from app.admin_panel.views import UsersAdmin, BookingsAdmin, HotelsAdmin, RoomsAdmin
 from app.admin_panel.auth import authentication_backend
+from app.admin_panel.views import (BookingsAdmin, HotelsAdmin, RoomsAdmin,
+                                   UsersAdmin)
 from app.bookings.router import router as router_bookings
 from app.config import settings
 from app.database import engine
-from app.users.router import router as router_users
-from app.hotels.router import router as router_hotels
 from app.hotels.rooms.router import router as router_rooms
-from app.pages.router import router as router_pages
+from app.hotels.router import router as router_hotels
 from app.images.router import router as router_image
+from app.logger import logger
+from app.pages.router import router as router_pages
+from app.users.router import router as router_users
 
 
 @asynccontextmanager
@@ -35,8 +34,6 @@ async def lifespan(_: FastAPI) -> AsyncIterator[None]:
 
 app = FastAPI(lifespan=lifespan)
 
-app.mount("/static", StaticFiles(directory="app/static"), "static")
-
 app.include_router(router_users)
 app.include_router(router_bookings)
 app.include_router(router_hotels)
@@ -47,6 +44,16 @@ app.include_router(router_image)
 origins = [
     "http://localhost:3000",
 ]
+'''
+app = VersionedFastAPI(app,
+                       version_format='{major}',
+                       prefix_format='/v{major}',
+                       #description='Greet users with a nice message',
+                       #middleware=[
+                       #    Middleware(SessionMiddleware, secret_key='mysecretkey')
+                       #]
+                       )
+'''
 
 app.add_middleware(
     CORSMiddleware,
@@ -64,37 +71,27 @@ admin.add_view(BookingsAdmin)
 admin.add_view(HotelsAdmin)
 admin.add_view(RoomsAdmin)
 
-
-class HotelsSearchArgs:
-    def __init__(self,
-                 location: str,
-                 date_from: date,
-                 date_to: date,
-                 has_spa: Annotated[bool, Query()] = None,
-                 stars: Annotated[int, Query(ge=0, le=5)] = None
-                 ):
-        self.location = location
-        self.date_from = date_from
-        self.date_to = date_to
-        self.has_spa = has_spa
-        self.stars = stars
+app.mount("/static", StaticFiles(directory="app/static"), "static")
 
 
-class SHotel(BaseModel):
-    address: str
-    name: str
-    stars: int
+@app.middleware("http")
+async def add_process_time_header(request: Request, call_next):
+    start_time = time.time()
+    response = await call_next(request)
+    process_time = time.time() - start_time
+    logger.info("Request handling time", extra={
+        "process_time": round(process_time, 4)
+    })
+    return response
 
 
-@app.get("/hotels")
-def get_hotels(
-        search_args: HotelsSearchArgs = Depends()
-) -> list[SHotel]:
-    hotels = [
-        {
-            "address": "ул. Центральная",
-            "name": "Московский",
-            "stars": 4
-        }
-    ]
-    return hotels
+sentry_sdk.init(
+    dsn=settings.SENTRY_DSN,
+    # Set traces_sample_rate to 1.0 to capture 100%
+    # of transactions for performance monitoring.
+    traces_sample_rate=settings.SENTRY_TRACES_SAMPLE_RATE,
+    # Set profiles_sample_rate to 1.0 to profile 100%
+    # of sampled transactions.
+    # We recommend adjusting this value in production.
+    profiles_sample_rate=settings.SENTRY_PROFILES_SAMPLE_RATE,
+)
