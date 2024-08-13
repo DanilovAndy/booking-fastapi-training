@@ -9,6 +9,7 @@ class Settings(BaseSettings):
                                       env_file_encoding='utf-8', extra='ignore')
 
     MODE: Literal["DEV", "TEST", "PROD"]
+    LOG_LEVEL: Literal["INFO", "DEBUG", "TRACE", "WARN", "ERROR", "FATAL"]
 
     DB_HOST: str
     DB_PORT: int
@@ -29,6 +30,10 @@ class Settings(BaseSettings):
 
     REDIS_HOST: str
     REDIS_PORT: int
+
+    SENTRY_DSN: str
+    SENTRY_TRACES_SAMPLE_RATE: float
+    SENTRY_PROFILES_SAMPLE_RATE: float
 
     SECRET_KEY: str
     ALGORITHM: str
