@@ -1,6 +1,4 @@
 .git-hooks
 .idea
 /git-conventional-commits.yaml
-/migrations/
-/alembic.ini
 /.env
