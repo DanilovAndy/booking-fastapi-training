@@ -2,3 +2,4 @@
 .idea
 /git-conventional-commits.yaml
 /.env
+/.env-non-dev
