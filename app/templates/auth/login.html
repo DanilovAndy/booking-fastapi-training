@@ -1,0 +1,50 @@
+{% extends "base.html" %}
+
+{% block head %}
+    <script>
+        async function loginUser() {
+            const wrongCredentialsSpan = document.getElementById("wrong_credentials");
+            wrongCredentialsSpan.textContent = "";
+
+            const url = "http://localhost:8000/auth/login";
+            const email = document.getElementById("email").value;
+            const password = document.getElementById("password").value;
+
+            await fetch(url, {
+                method: 'POST',
+                headers: {'Content-Type': 'application/json'}, 
+                body: JSON.stringify({email: email, password: password}),
+            }).then(response => {
+                if (response.status === 200) {
+                    window.location.href = "/pages/bookings"
+                } else {
+                    wrongCredentialsSpan.textContent = "Неверный email или пароль";
+                }
+            });
+        }
+    </script>
+{% endblock %}
+
+{% block content %}
+    <div class="flex flex-col items-center justify-center h-screen">
+        <span class="font-bold text-3xl mb-10">Авторизация</span>
+        <div>
+            <div class="flex flex-col items-start text-xl mb-5">
+                <label for="email" class="mb-1">Email</label>
+                <input class="border-b-2 border-blue-500 mb-4 outline-none" id="email" name="email" type="text" value="" placeholder="Email">
+
+                <label for="password" class="mb-1">Пароль</label>
+                <input class="border-b-2 border-blue-500 outline-none" id="password" name="password" type="password" value="" placeholder="********">
+                <span id="wrong_credentials" class="text-sm text-red-400"></span>
+            </div>
+        </div>
+        <button onclick="loginUser()" class="text-xl bg-blue-300 px-3 py-2 rounded-2xl mb-3">Войти</button>
+        <span>
+            Не зарегистрированы?
+            <a href="/pages/register"
+               class="underline text-blue-600 hover:text-blue-800">
+                Зарегистрироваться
+            </a>
+        </span>
+    </div>
+{% endblock %}
