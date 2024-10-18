@@ -24,3 +24,10 @@ async def get_hotels_by_location_and_time(
         raise CannotBookHotelForLongPeriod
     hotels = await HotelsDAO.find_all(location, date_from, date_to)
     return hotels
+
+
+@router.get("/id/{hotel_id}", include_in_schema=True)
+async def get_hotel_by_id(
+        hotel_id: int,
+):
+    return await HotelsDAO.find_one_or_none(id=hotel_id)

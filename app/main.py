@@ -80,7 +80,7 @@ instrumentator = Instrumentator(
 )
 instrumentator.instrument(app).expose(app)
 
-
+'''
 @app.middleware("http")
 async def add_process_time_header(request: Request, call_next):
     start_time = time.time()
@@ -90,7 +90,7 @@ async def add_process_time_header(request: Request, call_next):
         "process_time": round(process_time, 4)
     })
     return response
-
+'''
 
 sentry_sdk.init(
     dsn=settings.SENTRY_DSN,

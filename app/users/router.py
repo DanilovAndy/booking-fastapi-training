@@ -13,7 +13,7 @@ router = APIRouter(
 )
 
 
-@router.post("/register")
+@router.post("/register", status_code=201)
 async def register_user(user_data: SUserAuth):
     existing_user = await UsersDAO.find_one_or_none(email=user_data.email)
     if existing_user is not None:

@@ -1,6 +1,6 @@
 from datetime import date
 
-from fastapi import APIRouter, Depends
+from fastapi import APIRouter, Depends, BackgroundTasks
 from pydantic import TypeAdapter
 from fastapi_versioning import version
 
@@ -23,9 +23,10 @@ async def get_bookings(user: Users = Depends(get_cur_user)) -> list[SBooking]:
     return await BookingDAO.find_all(user_id=user.id)
 
 
-@router.post("")
+@router.post("", status_code=201)
 # @version(1)
 async def add_booking(
+        background_tasks: BackgroundTasks,
         room_id: int, date_from: date, date_to: date,
         user: Users = Depends(get_cur_user)
 ):
