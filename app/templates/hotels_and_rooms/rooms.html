@@ -2,22 +2,23 @@
 
 {% block head %}
     <script>
-        async function loginUser() {
+        async function successfulBooking() {
             const url = "http://localhost:8000/bookings";
-            const bookingId = document.getElementById("bookingId").value;
-
+            const roomId = document.getElementById("room_id").value;
+            const dateFrom = document.getElementById("date_from").value;
+            const dateTo = document.getElementById("date_to").value;
+            console.log(roomId, dateFrom, dateTo )
             await fetch(url, {
                 method: 'POST',
                 headers: {'Content-Type': 'application/json'}, 
-                body: JSON.stringify({email: email, password: password}),
+                body: JSON.stringify({room_id: roomId, date_from: dateFrom, date_to: dateTo}),
             }).then(response => {
-                if (response.status === 200) {
+                if (response.status === 201) {
                     window.location.href = "/pages/bookings"
-                } else {
-                    wrongCredentialsSpan.textContent = "Неверный email или пароль";
                 }
             });
         }
+
 
     </script>
 {% endblock %}
@@ -46,7 +47,6 @@
                             <span class="font-bold text-3xl">{{ room.total_cost }}</span>
                             <span class="mb-1 text-xl">за {{ booking_length }} ночей</span>
                             <span class="mb-2">{{ room.price }} за ночь</span>
-                            <form action="/pages/successful_booking" method="POST">
                                 <div class="flex flex-col items-center">
                                     <span>С {{ date_from_formatted }}</span>
                                     <span class="mb-5">По {{ date_to_formatted }}</span>
@@ -56,7 +56,7 @@
                                     type="text" value="{{ date_to }}" readonly="readonly">
                                     <input name="room_id" id="room_id" type="hidden"
                                         value="{{ room.id }}" readonly="readonly">
-                                    <button type="submit"
+                                    <button onclick="successfulBooking()"
                                             class="text-lg bg-blue-300 hover:bg-blue-400 px-3 py-1 rounded-3xl mb-5">
                                         Забронировать
                                     </button>

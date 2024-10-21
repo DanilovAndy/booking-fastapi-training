@@ -27,10 +27,11 @@ async def get_bookings(user: Users = Depends(get_cur_user)) -> list[SBooking]:
 # @version(1)
 async def add_booking(
         background_tasks: BackgroundTasks,
-        room_id: int, date_from: date, date_to: date,
+        #room_id: int, date_from: date, date_to: date,
+        booking_data: SNewBooking,
         user: Users = Depends(get_cur_user)
 ):
-    booking = await BookingDAO.add(user.id, room_id, date_from, date_to)
+    booking = await BookingDAO.add(user.id, booking_data.room_id, booking_data.date_from, booking_data.date_to)
     if not booking:
         raise RoomCannotBeBooked
 
