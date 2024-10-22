@@ -12,7 +12,7 @@
 
             await fetch(url, {
                 method: 'POST',
-                headers: {'Content-Type': 'application/json'}, 
+                headers: {'Content-Type': 'application/json', 'Access-Control-Allow-Origin': 'https://booking.danilovdev.ru' },
                 body: JSON.stringify({email: email, password: password}),
             }).then(response => {
                 if (response.status === 200) {
