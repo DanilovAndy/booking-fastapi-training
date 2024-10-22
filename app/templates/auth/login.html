@@ -5,8 +5,8 @@
         async function loginUser() {
             const wrongCredentialsSpan = document.getElementById("wrong_credentials");
             wrongCredentialsSpan.textContent = "";
-
-            const url = "/auth/login";
+            host = window.location.href.host
+            const url = host + "/auth/login";
             const email = document.getElementById("email").value;
             const password = document.getElementById("password").value;
 
