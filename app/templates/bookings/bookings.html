@@ -3,7 +3,7 @@
 {% block head %}
     <script>
         async function loginUser() {
-            const url = "http://localhost:8000/auth/logout";
+            const url = "/auth/logout";
             const bookingId = document.getElementById("bookingId").value;
 
             await fetch(url, {

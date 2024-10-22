@@ -2,9 +2,8 @@
 
 {% block head %}
     <script>
-        async function successfulBooking() {
-            const url = "http://localhost:8000/bookings";
-            const roomId = document.getElementById("room_id").value;
+        async function successfulBooking(roomId) {
+            const url = "/bookings";
             const dateFrom = document.getElementById("date_from").value;
             const dateTo = document.getElementById("date_to").value;
             console.log(roomId, dateFrom, dateTo )
@@ -56,7 +55,7 @@
                                     type="text" value="{{ date_to }}" readonly="readonly">
                                     <input name="room_id" id="room_id" type="hidden"
                                         value="{{ room.id }}" readonly="readonly">
-                                    <button onclick="successfulBooking()"
+                                    <button onclick="successfulBooking({{ room.id }})"
                                             class="text-lg bg-blue-300 hover:bg-blue-400 px-3 py-1 rounded-3xl mb-5">
                                         Забронировать
                                     </button>
