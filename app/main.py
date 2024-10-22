@@ -43,7 +43,7 @@ app.include_router(router_pages)
 app.include_router(router_image)
 
 origins = [
-    "http://localhost:3000", "http://localhost:8000", "https://booking.danilovdev.ru", "http://booking.danilovdev.ru"
+    '*'
 ]
 '''
 app = VersionedFastAPI(app,
