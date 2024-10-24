@@ -3,7 +3,7 @@
 {% block head %}
     <script>
         async function successfulBooking(roomId) {
-            const url = "/bookings";
+            const url = "api/bookings";
             const dateFrom = document.getElementById("date_from").value;
             const dateTo = document.getElementById("date_to").value;
             console.log(roomId, dateFrom, dateTo )
@@ -13,7 +13,7 @@
                 body: JSON.stringify({room_id: roomId, date_from: dateFrom, date_to: dateTo}),
             }).then(response => {
                 if (response.status === 201) {
-                    window.location.href = "/pages/bookings"
+                    window.location.href = "/bookings"
                 }
             });
         }

@@ -4,7 +4,7 @@ from fastapi import APIRouter, Query
 
 from app.hotels.rooms.dao import RoomsDAO
 
-router = APIRouter(prefix="/hotels", tags=["Rooms"])
+router = APIRouter(prefix="/api/hotels", tags=["Rooms"])
 
 
 @router.get("/{hotel_id}/rooms")

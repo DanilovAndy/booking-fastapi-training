@@ -9,7 +9,7 @@ from app.hotels.rooms.router import get_rooms
 from app.hotels.router import get_hotels_by_location_and_time, get_hotel_by_id
 
 router = APIRouter(
-    prefix="/pages",
+    prefix="",
     tags=["Frontend"]
 )
 

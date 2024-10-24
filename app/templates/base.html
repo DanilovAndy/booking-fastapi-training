@@ -10,13 +10,13 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
         async function logoutUser() {
-            const url = "/auth/logout";
+            const url = "api/auth/logout";
 
             await fetch(url, {
                 method: 'POST',
             }).then(response => {
                 if (response.status === 200) {
-                    window.location.href = "/pages/login"
+                    window.location.href = "/login"
                 }
             });
         }
@@ -28,10 +28,10 @@
 <nav class="mb-10">
     <div class="flex justify-between px-8 py-3 text-2xl">
       <ul>
-        <li><a href="/pages/hotels/Санкт-Петербург?date_to=2024-05-01&date_from=2024-04-17">Отели</a></li>
+        <li><a href="/hotels/Санкт-Петербург?date_to=2024-05-01&date_from=2024-04-17">Отели</a></li>
       </ul>
       <ul class="flex gap-x-5">
-        <li><a href="/pages/bookings">Мои бронирования</a></li>
+        <li><a href="/bookings">Мои бронирования</a></li>
         <li>
             <button onclick="logoutUser()">Выйти</button>
         </li>

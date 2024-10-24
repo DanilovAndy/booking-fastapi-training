@@ -8,7 +8,7 @@ from app.users.models import Users
 from app.users.schemas import SUserAuth
 
 router = APIRouter(
-    prefix='/auth',
+    prefix='/api/auth',
     tags=["Auth & Users"]
 )
 

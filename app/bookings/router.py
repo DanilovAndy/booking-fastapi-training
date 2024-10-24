@@ -12,7 +12,7 @@ from app.users.models import Users
 from app.tasks.tasks import send_booking_confirmation_email
 
 router = APIRouter(
-    prefix="/bookings",
+    prefix="/api/bookings",
     tags=["Bookings"]
 )
 
@@ -41,10 +41,11 @@ async def add_booking(
     return booking
 
 
-@router.delete("/{booking_id}")
+@router.delete("/")
 # @version(1)
 async def delete_booking(
         booking_id: int,
         user: Users = Depends(get_cur_user)
 ):
+
     await BookingDAO.delete(id=booking_id, user_id=user.id)
