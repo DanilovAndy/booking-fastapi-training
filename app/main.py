@@ -5,6 +5,7 @@ from typing import AsyncIterator
 import sentry_sdk
 from fastapi import FastAPI, Request
 from fastapi.middleware.cors import CORSMiddleware
+from fastapi.responses import RedirectResponse
 from fastapi.staticfiles import StaticFiles
 from fastapi_cache import FastAPICache
 from fastapi_cache.backends.redis import RedisBackend
@@ -102,3 +103,8 @@ sentry_sdk.init(
     # We recommend adjusting this value in production.
     profiles_sample_rate=settings.SENTRY_PROFILES_SAMPLE_RATE,
 )
+
+
+@app.exception_handler(404)
+async def custom_404_handler(_, __):
+    return RedirectResponse("/login")
