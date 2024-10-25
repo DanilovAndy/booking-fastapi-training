@@ -31,3 +31,12 @@ async def get_cur_user(token: str = Depends(get_token)):
         raise UserIsNotPresent
 
     return user
+
+
+async def get_cur_user_username(request: Request):
+    try:
+        token = get_token(request)
+        user = await get_cur_user(token)
+        return user.email
+    except Exception as e: #FIX ME
+        return None

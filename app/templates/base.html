@@ -6,11 +6,15 @@
           content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <link rel="icon" href="{{ url_for('static', path='images/logo.png') }}">
-    <link rel="stylesheet" href="{{ url_for('static', path='css/navbar.css') }}">
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
+
+        function loginLink() {
+            window.location.href = "/login"
+        }
+
         async function logoutUser() {
-            const url = "api/auth/logout";
+            const url = "/api/auth/logout";
 
             await fetch(url, {
                 method: 'POST',
@@ -19,6 +23,25 @@
                     window.location.href = "/login"
                 }
             });
+        };
+
+        async function getUserName() {
+             const url = "/api/auth/me";
+
+             await fetch(url, {
+                    method: 'GET',
+             })
+             .then(response=>response.json())
+             .then(data=>{ username = data.email; })
+        console.log(username)
+        if (username !== undefined) {
+                requestAnimationFrame(() => {
+                document.getElementById("userName").textContent = username;
+                document.getElementById("authButton").textContent = "Выйти";
+                });
+        } else {
+            document.getElementById("authButton").innerText = "Войти";
+        }
         }
     </script>
     {% block head %}{% endblock %}
@@ -28,13 +51,18 @@
 <nav class="mb-10">
     <div class="flex justify-between px-8 py-3 text-2xl">
       <ul>
-        <li><a href="/hotels/Санкт-Петербург?date_to=2024-05-01&date_from=2024-04-17">Отели</a></li>
+          <li><a href="/hotels/Санкт-Петербург?date_to=2024-05-01&date_from=2024-04-17">Отели</a></li>
       </ul>
       <ul class="flex gap-x-5">
-        <li><a href="/bookings">Мои бронирования</a></li>
-        <li>
-            <button onclick="logoutUser()">Выйти</button>
-        </li>
+          {% if cur_user != None %}
+          <li>
+              <a id='userName' href="/bookings">{{ cur_user }}</a>
+          </li>
+          {% endif %}
+          <li>
+              <button id="authButton" onclick="{{ 'logoutUser()' if cur_user != None else 'loginLink()' }}" class="button-link">
+              {{ "Войти" if cur_user == None else "Выйти" }}</button>
+          </li>
       </ul>
     </div>
     <hr/>

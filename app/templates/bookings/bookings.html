@@ -3,8 +3,8 @@
 {% block head %}
     <script>
         async function deleteBooking(bookingId) {
-            const url = "api/bookings/bookingId";
-            const bookingId = document.getElementById("bookingId").value;
+            const url = "/api/bookings/bookingId";
+            const bookingId = document.getElementById(bookingId).value;
 
             await fetch(url, {
                 method: 'POST',

@@ -7,6 +7,7 @@ from fastapi.responses import HTMLResponse
 from app.bookings.router import add_booking, get_bookings
 from app.hotels.rooms.router import get_rooms
 from app.hotels.router import get_hotels_by_location_and_time, get_hotel_by_id
+from app.users.dependencies import get_cur_user_username
 
 router = APIRouter(
     prefix="",
@@ -35,13 +36,13 @@ def format_number_thousand_separator(
 
 
 @router.get("/login", response_class=HTMLResponse)
-async def get_login_page(request: Request):
-    return templates.TemplateResponse("auth/login.html", {"request": request})
+async def get_login_page(request: Request, cur_user=Depends(get_cur_user_username)):
+    return templates.TemplateResponse("auth/login.html", {"request": request, "cur_user": cur_user})
 
 
 @router.get("/register", response_class=HTMLResponse)
-async def get_register_page(request: Request):
-    return templates.TemplateResponse("auth/register.html", {"request": request})
+async def get_register_page(request: Request, cur_user=Depends(get_cur_user_username)):
+    return templates.TemplateResponse("auth/register.html", {"request": request, "cur_user": cur_user})
 
 
 @router.get("/hotels/{location}", response_class=HTMLResponse)
@@ -51,6 +52,7 @@ async def get_hotels_page(
         date_to: date,
         date_from: date,
         hotels=Depends(get_hotels_by_location_and_time),
+        cur_user=Depends(get_cur_user_username)
 ):
     dates = get_month_days()
     if date_from > date_to:
@@ -68,6 +70,7 @@ async def get_hotels_page(
             "date_to": date_to.strftime("%Y-%m-%d"),
             "date_from": date_from.strftime("%Y-%m-%d"),
             "dates": dates,
+            "cur_user": cur_user
         },
     )
 
@@ -79,6 +82,7 @@ async def get_rooms_page(
         date_to: date,
         rooms=Depends(get_rooms),
         hotel=Depends(get_hotel_by_id),
+        cur_user=Depends(get_cur_user_username)
 ):
     date_from_formatted = date_from.strftime("%d.%m.%Y")
     date_to_formatted = date_to.strftime("%d.%m.%Y")
@@ -94,6 +98,7 @@ async def get_rooms_page(
             "booking_length": booking_length,
             "date_from_formatted": date_from_formatted,
             "date_to_formatted": date_to_formatted,
+            "cur_user": cur_user
         },
     )
 
@@ -102,9 +107,10 @@ async def get_rooms_page(
 async def get_successful_booking_page(
         request: Request,
         _=Depends(add_booking),
+        cur_user=Depends(get_cur_user_username)
 ):
     return templates.TemplateResponse(
-        "bookings/booking_successful.html", {"request": request}
+        "bookings/booking_successful.html", {"request": request, "cur_user": cur_user}
     )
 
 
@@ -112,6 +118,7 @@ async def get_successful_booking_page(
 async def get_bookings_page(
         request: Request,
         bookings=Depends(get_bookings),
+        cur_user=Depends(get_cur_user_username)
 ):
     return templates.TemplateResponse(
         "bookings/bookings.html",
@@ -119,5 +126,6 @@ async def get_bookings_page(
             "request": request,
             "bookings": bookings,
             "format_number_thousand_separator": format_number_thousand_separator,
+            "cur_user": cur_user
         },
     )
