@@ -12,7 +12,7 @@ class Hotels(Base):
     location = Column(String, nullable=False)
     services = Column(JSON)
     rooms_quantity = Column(Integer, nullable=False)
-    image_id = Column(Integer, nullable=False)
+    image_link = Column(String)
 
     rooms = relationship("Rooms", back_populates="hotel")
 

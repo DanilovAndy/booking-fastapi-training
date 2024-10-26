@@ -47,7 +47,7 @@
         <div class="flex flex-col items-center ">
             {% for hotel in hotels %}
                 <div class="flex shadow-md w-4/6 mb-5 pr-4 place-items-center">
-                    <img class="w-2/6" src="{{ url_for('static', path='images/' + hotel.image_id|string + '.webp') }}" alt="фото отеля">
+                    <img class="w-2/6 max-w-40 max-h-40" src="{{ hotel.image_link }}" alt="фото отеля">
                     <div class="w-3/6 px-4 py-3 ">
                         <div class="pl-1 font-bold">{{ hotel.name }}</div>
                         <hr class="my-2">
