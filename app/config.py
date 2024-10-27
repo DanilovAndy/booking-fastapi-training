@@ -35,6 +35,8 @@ class Settings(BaseSettings):
     SENTRY_TRACES_SAMPLE_RATE: float
     SENTRY_PROFILES_SAMPLE_RATE: float
 
+    ENABLE_ADMIN: bool
+
     SECRET_KEY: str
     ALGORITHM: str
 

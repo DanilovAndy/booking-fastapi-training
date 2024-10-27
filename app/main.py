@@ -66,12 +66,12 @@ app.add_middleware(
                    "Access-Control-Allow-Origin",
                    "Authorization"],
 )
-
-admin = Admin(app, engine, authentication_backend=authentication_backend)
-admin.add_view(UsersAdmin)
-admin.add_view(BookingsAdmin)
-admin.add_view(HotelsAdmin)
-admin.add_view(RoomsAdmin)
+if settings.ENABLE_ADMIN:
+    admin = Admin(app, engine, authentication_backend=authentication_backend)
+    admin.add_view(UsersAdmin)
+    admin.add_view(BookingsAdmin)
+    admin.add_view(HotelsAdmin)
+    admin.add_view(RoomsAdmin)
 
 app.mount("/static", StaticFiles(directory="app/static"), "static")
 
