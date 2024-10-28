@@ -6,7 +6,7 @@ from fastapi.responses import HTMLResponse
 
 from app.bookings.router import add_booking, get_bookings
 from app.hotels.rooms.router import get_rooms
-from app.hotels.router import get_hotels_by_location_and_time, get_hotel_by_id
+from app.hotels.router import get_hotels_by_location_and_time, get_hotel_by_id, search_dates_normaliser
 from app.users.dependencies import get_cur_user_username
 
 router = APIRouter(
@@ -17,8 +17,8 @@ router = APIRouter(
 templates = Jinja2Templates(directory="app/templates")
 
 
-def get_month_days(date: datetime = datetime.today()):
-    counter = datetime(date.year, date.month, datetime.today().day, tzinfo=date.tzinfo)
+def get_month_days(cur_date: datetime = datetime.today()):
+    counter = datetime(cur_date.year, cur_date.month, cur_date.day, tzinfo=cur_date.tzinfo)
     date_list = []
     for _ in range(90):
         date_list.append(
@@ -49,18 +49,14 @@ async def get_register_page(request: Request, cur_user=Depends(get_cur_user_user
 async def get_hotels_page(
         request: Request,
         location: str,
-        date_to: date,
-        date_from: date,
+        normalised_dates=Depends(search_dates_normaliser),
         hotels=Depends(get_hotels_by_location_and_time),
         cur_user=Depends(get_cur_user_username)
 ):
     dates = get_month_days()
-    if date_from > date_to:
-        date_to, date_from = date_from, date_to
-    # Автоматически ставим дату заезда позже текущей даты
-    date_from = max(datetime.today().date(), date_from)
-    # Автоматически ставим дату выезда не позже, чем через 180 дней
-    date_to = min((datetime.today() + timedelta(days=180)).date(), date_to)
+    date_from = normalised_dates['date_from']
+    date_to = normalised_dates['date_to']
+
     return templates.TemplateResponse(
         "hotels_and_rooms/hotels.html",
         {
