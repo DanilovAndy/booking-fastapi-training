@@ -9,7 +9,7 @@ class SHotel(BaseModel):
     location: str
     services: List[str]
     rooms_quantity: int
-    image_id: int
+    image_link: str
 
     class Config:
         from_attributes = True
