@@ -35,7 +35,7 @@
         <span>По</span>
         <select id="date_to" class="p-2 mx-2">
             {% for date in dates %}
-                <option value="{{ date['date'] }}" {{ 'selected' if date['date_formatted'] == date_to or date == dates[-1] }}>
+                <option value="{{ date['date'] }}" {{ 'selected' if date['date_formatted'] == date_to }}>
                     {{ date["date_formatted"] }}
                 </option>
             {% endfor %}
