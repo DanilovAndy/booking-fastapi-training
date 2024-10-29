@@ -1,6 +1,7 @@
 from datetime import date
+from typing import Optional
 
-from sqlalchemy import select, func, or_, and_
+from sqlalchemy import select, func, or_, and_, case
 
 from app.bookings.models import Bookings
 from app.dao.base import BaseDAO
@@ -13,7 +14,7 @@ class HotelsDAO(BaseDAO):
     model = Hotels
 
     @classmethod
-    async def find_all(cls, location: str, date_from: date, date_to: date):
+    async def find_all(cls, date_from: date, date_to: date, location: Optional[str] = None):
         """
         WITH booked_rooms AS (
             SELECT room_id, COUNT(room_id) AS rooms_booked
@@ -72,7 +73,14 @@ class HotelsDAO(BaseDAO):
             .where(
                 and_(
                     booked_hotels.c.number_of_rooms_left > 0,
-                    Hotels.location.like(f"%{location}%"),
+                    case(
+                        (
+                                location is not None,
+                                Hotels.location.like(f"%{location}%")
+                                )
+                        ,
+                        else_=True
+                    )
                 )
             )
         )

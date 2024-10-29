@@ -37,10 +37,10 @@ def search_dates_normaliser(
     return {'date_from': date_from, 'date_to': date_to}
 
 
-@router.get("/{location}")
+@router.get("")
 @cache(expire=20)
 async def get_hotels_by_location_and_time(
-        location: str,
+        location: str = '',
         normalised_date=Depends(search_dates_normaliser)
 ) -> List[SHotelInfo]:
     date_from = normalised_date['date_from']
@@ -48,7 +48,7 @@ async def get_hotels_by_location_and_time(
 
     if (date_to - date_from).days > 90:
         raise CannotBookHotelForLongPeriod
-    hotels = await HotelsDAO.find_all(location, date_from, date_to)
+    hotels = await HotelsDAO.find_all(date_from=date_from, date_to=date_to, location=location)
     return hotels
 
 

@@ -1,4 +1,5 @@
 from datetime import date, timedelta, datetime
+from typing import Optional
 
 from fastapi import APIRouter, Request, Depends
 from fastapi.templating import Jinja2Templates
@@ -45,10 +46,10 @@ async def get_register_page(request: Request, cur_user=Depends(get_cur_user_user
     return templates.TemplateResponse("auth/register.html", {"request": request, "cur_user": cur_user})
 
 
-@router.get("/hotels/{location}", response_class=HTMLResponse)
+@router.get("/hotels", response_class=HTMLResponse)
 async def get_hotels_page(
         request: Request,
-        location: str,
+        location: Optional[str] = '',
         normalised_dates=Depends(search_dates_normaliser),
         hotels=Depends(get_hotels_by_location_and_time),
         cur_user=Depends(get_cur_user_username)
