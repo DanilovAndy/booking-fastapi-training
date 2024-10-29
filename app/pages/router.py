@@ -75,12 +75,13 @@ async def get_hotels_page(
 @router.get("/hotels/{hotel_id}/rooms", response_class=HTMLResponse)
 async def get_rooms_page(
         request: Request,
-        date_from: date,
-        date_to: date,
+        normalised_dates=Depends(search_dates_normaliser),
         rooms=Depends(get_rooms),
         hotel=Depends(get_hotel_by_id),
         cur_user=Depends(get_cur_user_username)
 ):
+    date_from = normalised_dates['date_from']
+    date_to = normalised_dates['date_to']
     date_from_formatted = date_from.strftime("%d.%m.%Y")
     date_to_formatted = date_to.strftime("%d.%m.%Y")
     booking_length = (date_to - date_from).days
