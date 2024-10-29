@@ -41,7 +41,7 @@ async def add_booking(
     return booking
 
 
-@router.delete("/")
+@router.delete("", status_code=204)
 # @version(1)
 async def delete_booking(
         booking_id: int,
