@@ -7,8 +7,9 @@ from fastapi.responses import HTMLResponse
 
 from app.bookings.router import add_booking, get_bookings
 from app.hotels.rooms.router import get_rooms
-from app.hotels.router import get_hotels_by_location_and_time, get_hotel_by_id, search_dates_normaliser
+from app.hotels.router import get_hotels_by_location_and_time, get_hotel_by_id
 from app.users.dependencies import get_cur_user_username
+from app.utility.dependencies.parameters import search_dates_normaliser_query_parameters
 
 router = APIRouter(
     prefix="",
@@ -50,7 +51,7 @@ async def get_register_page(request: Request, cur_user=Depends(get_cur_user_user
 async def get_hotels_page(
         request: Request,
         location: Optional[str] = '',
-        normalised_dates=Depends(search_dates_normaliser),
+        normalised_dates=Depends(search_dates_normaliser_query_parameters),
         hotels=Depends(get_hotels_by_location_and_time),
         cur_user=Depends(get_cur_user_username)
 ):
@@ -75,7 +76,7 @@ async def get_hotels_page(
 @router.get("/hotels/{hotel_id}/rooms", response_class=HTMLResponse)
 async def get_rooms_page(
         request: Request,
-        normalised_dates=Depends(search_dates_normaliser),
+        normalised_dates=Depends(search_dates_normaliser_query_parameters),
         rooms=Depends(get_rooms),
         hotel=Depends(get_hotel_by_id),
         cur_user=Depends(get_cur_user_username)
