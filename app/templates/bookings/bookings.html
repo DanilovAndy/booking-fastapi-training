@@ -4,7 +4,7 @@
     <script>
 
         async function deleteBooking(bookingId) {
-            const url = "/api/bookings/?booking_id=" + bookingId;
+            const url = "/api/bookings?booking_id=" + bookingId;
             console.log(bookingId)
             await fetch(url, {
                 method: 'DELETE',
@@ -28,7 +28,7 @@
                 <span>{{ booking.hotel_name }}</span>
             </div>
             <div class="flex shadow-md mb-5 w-fit pr-4">
-                <img src="{{ url_for('static', path='images/' + booking.image_id|string + '.webp') }}" alt="Комната" width="250">
+                <img src="{{ booking.image_link }}" alt="Комната" width="250">
                 <div class="px-4 py-3">
                     <div class="pl-1 font-bold">{{ booking.name }}</div>
                     <hr class="my-2">

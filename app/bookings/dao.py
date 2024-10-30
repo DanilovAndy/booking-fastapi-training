@@ -73,9 +73,9 @@ class BookingDAO(BaseDAO):
                 rooms_left: int = rooms_left.scalar()
 
                 if rooms_left and rooms_left > 0:
-                    get_price = select(Rooms.price).filter_by(id=room_id)
-                    price = await session.execute(get_price)
-                    price: int = price.scalar()
+                    get_price_and_image = select(Rooms.price, Rooms.image_link).filter_by(id=room_id)
+                    price_and_image = await session.execute(get_price_and_image)
+                    price_and_image = price_and_image.mappings().one()
                     add_booking = (
                         insert(Bookings)
                         .values(
@@ -83,7 +83,8 @@ class BookingDAO(BaseDAO):
                             user_id=user_id,
                             date_from=date_from,
                             date_to=date_to,
-                            price=price,
+                            price=price_and_image['price'],
+                            image_link=price_and_image['image_link']
                         )
                         .returning(Bookings)
                     )
