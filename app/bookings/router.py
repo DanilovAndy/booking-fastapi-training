@@ -7,6 +7,7 @@ from fastapi_versioning import version
 from app.bookings.dao import BookingDAO
 from app.bookings.schemas import SBooking, SNewBooking
 from app.exceptions import RoomCannotBeBooked
+from app.hotels.router import search_dates_normaliser
 from app.users.dependencies import get_cur_user
 from app.users.models import Users
 from app.tasks.tasks import send_booking_confirmation_email
@@ -27,11 +28,15 @@ async def get_bookings(user: Users = Depends(get_cur_user)) -> list[SBooking]:
 # @version(1)
 async def add_booking(
         background_tasks: BackgroundTasks,
-        #room_id: int, date_from: date, date_to: date,
-        booking_data: SNewBooking,
+        # room_id: int, date_from: date, date_to: date,
+        # booking_data: SNewBooking,
+        room_id: int,
+        normalised_dates=Depends(search_dates_normaliser),
         user: Users = Depends(get_cur_user)
 ):
-    booking = await BookingDAO.add(user.id, booking_data.room_id, booking_data.date_from, booking_data.date_to)
+    date_from = normalised_dates['date_from']
+    date_to = normalised_dates['date_to']
+    booking = await BookingDAO.add(user.id, room_id, date_from, date_to)
     if not booking:
         raise RoomCannotBeBooked
 
