@@ -6,7 +6,7 @@
         const searchInputValue = document.getElementById("operation_search").value;
         const dateFromSelectValue = document.getElementById("date_from").value;
         const dateToSelectValue = document.getElementById("date_to").value;
-        window.location.href = `/hotels/?location=${searchInputValue}&date_from=${dateFromSelectValue}&date_to=${dateToSelectValue}`;
+        window.location.href = `/hotels?location=${searchInputValue}&date_from=${dateFromSelectValue}&date_to=${dateToSelectValue}`;
     }
 
     const exploreHotelRooms = (hotel_id) => {
