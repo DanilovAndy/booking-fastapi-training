@@ -35,8 +35,6 @@ async def add_booking(
         booking_dates: SBookingDates = Depends(search_dates_normaliser_body_parameters),
         user: Users = Depends(get_cur_user)
 ):
-    print(booking_dates)
-    print(room_id)
     booking = await BookingDAO.add(user.id, room_id.room_id, booking_dates.date_from, booking_dates.date_to)
     if not booking:
         raise RoomCannotBeBooked
