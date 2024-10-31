@@ -7,43 +7,7 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <link rel="icon" href="{{ url_for('static', path='images/logo.png') }}">
     <script src="https://cdn.tailwindcss.com"></script>
-    <script>
-
-        function loginLink() {
-            window.location.href = "/login"
-        }
-
-        async function logoutUser() {
-            const url = "/api/auth/logout";
-
-            await fetch(url, {
-                method: 'POST',
-            }).then(response => {
-                if (response.status === 200) {
-                    window.location.href = "/login"
-                }
-            });
-        };
-
-        async function getUserName() {
-             const url = "/api/auth/me";
-
-             await fetch(url, {
-                    method: 'GET',
-             })
-             .then(response=>response.json())
-             .then(data=>{ username = data.email; })
-        console.log(username)
-        if (username !== undefined) {
-                requestAnimationFrame(() => {
-                document.getElementById("userName").textContent = username;
-                document.getElementById("authButton").textContent = "Выйти";
-                });
-        } else {
-            document.getElementById("authButton").innerText = "Войти";
-        }
-        }
-    </script>
+    <script src="{{ url_for('static', path='js/base_script.js') }}" ></script>
     {% block head %}{% endblock %}
     <title>Отели</title>
 </head>
