@@ -1,25 +1,7 @@
 {% extends "base.html" %}
 
 {% block head %}
-    <script>
-        async function successfulBooking(roomId) {
-            const url = "/api/bookings";
-            const dateFrom = document.getElementById("date_from").value;
-            const dateTo = document.getElementById("date_to").value;
-            console.log(roomId, dateFrom, dateTo )
-            await fetch(url, {
-                method: 'POST',
-                headers: {'Content-Type': 'application/json'}, 
-                body: JSON.stringify({room_id: {room_id: roomId}, booking_dates: {date_from: dateFrom, date_to: dateTo}}),
-            }).then(response => {
-                if (response.status === 201) {
-                    window.location.href = "/bookings"
-                }
-            });
-        }
-
-
-    </script>
+    <script src="{{ url_for('static', path='js/script.js') }}" ></script>
 {% endblock %}
 
 {% block content %}
@@ -30,7 +12,7 @@
     {% if rooms %}
         <div class="flex flex-col items-center justify-center">
             {% for room in rooms %}
-                <div class="flex shadow-md w-4/6 mb-5 pr-4 place-items-center">
+                <div class="flex shadow-md w-4/6 mb-5 pr-4 place-items-center hover:bg-slate-100">
                     <img class="w-2/6" src="{{ room.image_link }}" alt="Номер">
                     <div class="w-4/6 flex items-center">
                         <div class="w-4/6 px-4 py-3 w-[25rem]">
@@ -49,14 +31,8 @@
                                 <div class="flex flex-col items-center">
                                     <span>С {{ date_from_formatted }}</span>
                                     <span class="mb-5">По {{ date_to_formatted }}</span>
-                                    <input name="date_from" id="date_from" type="hidden"
-                                        type="text" value="{{ date_from }}" readonly="readonly">
-                                    <input name="date_to" id="date_to" type="hidden"
-                                    type="text" value="{{ date_to }}" readonly="readonly">
-                                    <input name="room_id" id="room_id" type="hidden"
-                                        value="{{ room.id }}" readonly="readonly">
-                                    <button onclick="successfulBooking({{ room.id }})"
-                                            class="text-lg bg-blue-300 hover:bg-blue-400 px-3 py-1 rounded-3xl mb-5">
+                                    <button onclick="successfulBooking({{ room.id }}, '{{ date_from }}', '{{ date_to }}')"
+                                            class="text-lg bg-blue-200 hover:bg-blue-300 px-3 py-1 rounded-3xl mb-5">
                                         Забронировать
                                     </button>
                                 </div>

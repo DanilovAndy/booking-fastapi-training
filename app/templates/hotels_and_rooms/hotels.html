@@ -20,7 +20,7 @@
 {% block content %}
 <div>
     <div class="flex justify-center items-center mb-10">
-        <div class="border-2 border-blue-500  rounded-3xl w-1/4 text-lg px-2 py-1 mr-2 text-ellipsis overflow-hidden scroll-px-4">
+        <div class="border-2 border-blue-300  rounded-3xl w-1/4 text-lg px-2 py-1 mr-2 text-ellipsis overflow-hidden scroll-px-4">
             <input class="outline-none flex justify-center items-center px-2 mx-2" id="operation_search" size="34" type="text" value="{{ location }}"
                    placeholder="Я ищу...">
         </div>
@@ -41,12 +41,12 @@
             {% endfor %}
         </select>
         <button onclick="searchForOperation()"
-                class="text-xl bg-blue-300 hover:bg-blue-400 px-3 py-1 rounded-2xl">Найти</button>
+                class="text-xl bg-blue-200 hover:bg-blue-300 px-3 py-1 rounded-2xl">Найти</button>
     </div>
     {% if hotels %}
         <div class="flex flex-col items-center ">
             {% for hotel in hotels %}
-                <div class="flex shadow-md w-4/6 mb-5 pr-4 place-items-center">
+                <div class="flex shadow-md w-4/6 mb-5 pr-4 place-items-center hover:bg-slate-100">
                     <img class="w-2/6 max-w-40 max-h-40" src="{{ hotel.image_link }}" alt="фото отеля">
                     <div class="w-3/6 px-4 py-3 ">
                         <div class="pl-1 font-bold">{{ hotel.name }}</div>
@@ -63,7 +63,7 @@
                         </div> -->
                         <!-- <span class="mb-5">за 12 ночей</span> -->
                         <button onclick="exploreHotelRooms('{{ hotel.id }}')"
-                                class="text-lg bg-blue-300 hover:bg-blue-400 px-3 py-1 rounded-3xl ">
+                                class="text-lg bg-blue-200 hover:bg-blue-300 px-3 py-1 rounded-3xl ">
                             Выбрать номер
                         </button>
                     </div>

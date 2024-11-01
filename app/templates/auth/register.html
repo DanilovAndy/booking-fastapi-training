@@ -1,55 +1,7 @@
 {% extends "base.html" %}
 
 {% block head %}
-    <script>
-        async function loginUser(email, password) {
-            const wrongCredentialsSpan = document.getElementById("wrong_credentials");
-            wrongCredentialsSpan.textContent = "";
-            const url = "api/auth/login";
-            await fetch(url, {
-                method: 'POST',
-                headers: {'Content-Type': 'application/json'},
-                body: JSON.stringify({email: email, password: password}),
-            }).then(response => {
-                if (response.status === 200) {
-                    window.location.href = "/bookings"
-                } else {
-                    wrongCredentialsSpan.textContent = "Ошибка авторизации";
-                }
-            });
-        }
-
-        async function registerUser() {
-            const wrongCredentialsSpan = document.getElementById("wrong_credentials");
-            wrongCredentialsSpan.textContent = "";
-
-            const url = "/api/auth/register";
-            const email = document.getElementById("email").value;
-            const password = document.getElementById("password").value;
-
-            await fetch(url, {
-                method: 'POST',
-                headers: {'Content-Type': 'application/json'},
-                body: JSON.stringify({email: email, password: password}),
-            })
-            .then(response => {
-                switch (response.status)
-                {
-                    case 201:
-                        loginUser(email, password);
-                        break;
-                    case 422:
-                        wrongCredentialsSpan.textContent = "Некорретный email или пароль";
-                        break;
-                    case 409:
-                        wrongCredentialsSpan.textContent = "Пользователь уже существует";
-                        break;
-                    default:
-                        wrongCredentialsSpan.textContent = "Внутренняя ошибка сервера";
-                }
-            });
-        }
-    </script>
+    <script src="{{ url_for('static', path='js/auth_script.js') }}" ></script>
 {% endblock %}
 
 {% block content %}
@@ -59,14 +11,14 @@
         <div>
             <div class="flex flex-col items-start text-xl mb-5">
                 <label for="email" class="mb-1">Email</label>
-                <input class="border-b-2 border-blue-500 mb-4 outline-none" id="email" name="email" type="text" value="" placeholder="Email">
+                <input class="border-b-2 border-blue-300 mb-4 outline-none" id="email" name="email" type="text" value="" placeholder="Email">
 
                 <label for="password" class="mb-1">Пароль</label>
-                <input class="border-b-2 border-blue-500 outline-none" id="password" name="password" type="password" value="" placeholder="********">
+                <input class="border-b-2 border-blue-300 outline-none" id="password" name="password" type="password" value="" placeholder="********">
                 <span id="wrong_credentials" class="text-sm text-red-400"></span>
             </div>
         </div>
-        <button onclick="registerUser()" class="text-xl bg-blue-300 px-3 py-2 rounded-3xl mb-3">Зарегистрироваться</button>
+        <button onclick="registerUser(getElementById('email').value, getElementById('password').value)" class="text-xl bg-blue-200 hover:bg-blue-300 px-3 py-2 rounded-3xl mb-3">Зарегистрироваться</button>
         <span>
             Уже зарегистрированы?
             <a href="/login"

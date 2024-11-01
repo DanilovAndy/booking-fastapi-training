@@ -1,20 +1,7 @@
 {% extends "base.html" %}
 
 {% block head %}
-    <script>
-
-        async function deleteBooking(bookingId) {
-            const url = "/api/bookings?booking_id=" + bookingId;
-            console.log(bookingId)
-            await fetch(url, {
-                method: 'DELETE',
-            }).then(response => {
-                if (response.status === 204) {
-                    window.location.href = "/bookings"
-                }
-            });
-        }
-    </script>
+    <script src="{{ url_for('static', path='js/script.js') }}" ></script>
 {% endblock %}
 
 {% block content %}
@@ -27,7 +14,7 @@
             <div class="text-2xl font-bold mb-5">
                 <span>{{ booking.hotel_name }}</span>
             </div>
-            <div class="flex shadow-md mb-5 w-fit pr-4">
+            <div class="flex shadow-md mb-5 w-fit pr-4 hover:bg-slate-100">
                 <img src="{{ booking.image_link }}" alt="Комната" width="250">
                 <div class="px-4 py-3">
                     <div class="pl-1 font-bold">{{ booking.name }}</div>
@@ -44,7 +31,7 @@
                     <span class="font-bold text-3xl">{{ format_number_thousand_separator(booking.total_cost) }}</span>
                     <span class="mb-3">за {{ booking.total_days }} ночей</span>
                     <span hidden id="bookingId">{{ booking.id }}</span>
-                    <button onclick="deleteBooking( {{ booking.id }} )" class="text-lg bg-red-300 px-3 py-1 rounded-2xl mb-4">Отменить бронь</button>
+                    <button onclick="deleteBooking( {{ booking.id }} )" class="text-lg bg-red-300 hover:bg-red-400 px-3 py-1 rounded-2xl mb-4">Отменить бронь</button>
                 </div>
             </div>
         </div>
