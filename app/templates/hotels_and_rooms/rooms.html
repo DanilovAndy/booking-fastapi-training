@@ -26,8 +26,16 @@
                         </div>
                         <div class="w-3/6 flex justify-top flex-col items-center">
                             <span class="font-bold text-3xl">{{ room.total_cost }}</span>
-                            <span class="mb-1 text-xl">за {{ booking_length }} ночей</span>
-                            <span class="mb-2">{{ room.price }} за ночь</span>
+                            <span class="mb-1 text-xl">за {{ booking_length }}
+                            {% if booking_length == 1 %}
+                                ночь
+                            {% elif 2 <= booking_length <= 4 %}
+                                ночи
+                            {% else %}
+                                ночей
+                            {% endif %}
+                            </span>
+                            <span class="mb-2">{{ room.price }} в сутки </span>
                                 <div class="flex flex-col items-center">
                                     <span>С {{ date_from_formatted }}</span>
                                     <span class="mb-5">По {{ date_to_formatted }}</span>

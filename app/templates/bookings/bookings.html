@@ -29,9 +29,17 @@
                     <span>С {{ booking.date_from }}</span>
                     <span>По {{ booking.date_to }}</span>
                     <span class="font-bold text-3xl">{{ format_number_thousand_separator(booking.total_cost) }}</span>
-                    <span class="mb-3">за {{ booking.total_days }} ночей</span>
+                    <span class="mb-3">за {{ booking.total_days }}
+                        {% if booking.total_days == 1 %}
+                            ночь
+                        {% elif 2 <= booking.total_days <= 4 %}
+                            ночи
+                        {% else %}
+                            ночей
+                        {% endif %}
+                    </span>
                     <span hidden id="bookingId">{{ booking.id }}</span>
-                    <button onclick="deleteBooking( {{ booking.id }} )" class="text-lg bg-red-300 hover:bg-red-400 px-3 py-1 rounded-2xl mb-4">Отменить бронь</button>
+                    <button onclick="deleteBooking( {{ booking.id }} )" class="bg-red-500 hover:bg-red-800 text-white font-bold py-2 px-4 rounded-full">Отменить бронь</button>
                 </div>
             </div>
         </div>
