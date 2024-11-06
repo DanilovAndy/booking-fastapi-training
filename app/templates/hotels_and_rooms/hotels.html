@@ -19,9 +19,9 @@
 
 {% block content %}
 <body>
-<div>
-    <div class="flex justify-center items-center mb-10">
-        <div class="border-2 border-blue-300  rounded-3xl w-1/4 text-lg px-2 py-1 mr-2 text-ellipsis overflow-hidden scroll-px-4">
+<div class="max-w-screen-xl mx-auto">
+    <div class="flex justify-center items-center">
+        <div class="border-2 border-blue-300 rounded-3xl w-1/4 text-lg px-2 py-1 mr-2 text-ellipsis overflow-hidden scroll-px-4">
             <input class="outline-none flex justify-center items-center px-2 mx-2" id="operation_search" size="34" type="text" value="{{ location }}"
                    placeholder="Я ищу...">
         </div>
@@ -42,35 +42,50 @@
             {% endfor %}
         </select>
         <button onclick="searchForOperation()"
-                class="text-xl text-white bg-slate-400 hover:bg-blue-300 px-3 py-1 rounded-2xl">Найти</button>
+                class="text-xl text-white bg-slate-400 hover:bg-blue-300 transition duration-300 px-3 py-1 rounded-2xl">Найти</button>
     </div>
     {% if hotels %}
-        <div class="flex flex-col items-center">
-            {% for hotel in hotels %}
-                <div class="flex shadow-md w-4/6 mb-5 pr-4 place-items-center hover:bg-slate-100">
-                    <img class="w-2/6 max-w-40 max-h-40" src="{{ hotel.image_link }}" alt="фото отеля">
-                    <div class="w-3/6 px-4 py-3 ">
-                        <div class="pl-1 font-bold">{{ hotel.name }}</div>
-                        <hr class="my-2">
-                        <div class="mb-2 pl-1 max-w-xs">{{ hotel.description }}</div>
-                        <div class="mb-2 pl-1">{{ hotel.location }}</div>
-                        <div class="mb-2 pl-1">{{ " · ".join(hotel.services) }}</div>
-                        <div class="pl-1">Осталось номеров: {{ hotel.number_of_rooms_left }} из {{hotel.rooms_quantity}}</div>
-                    </div>
-                    <div class="px-1 py-3">
+    <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-10 p-5 sm:p-10 md:p-16">
+
+        {% for hotel in hotels %}
+        <div class="group rounded overflow-hidden shadow-lg flex flex-col">
+            <div class="relative">
+
+                <img class="w-full"
+                     src="{{ hotel.image_link }}"
+                     alt="фото {{ hotel.name }}">
+                <div
+                     class="group-hover:bg-transparent transition duration-300 absolute bottom-0 top-0 right-0 left-0 bg-gray-900 opacity-15">
+                </div>
+                <div class="text-xs absolute top-0 right-0 bg-blue-600 px-2 py-1 text-white mt-2 mr-2 hover:bg-white hover:text-indigo-600 transition duration-500 ease-in-out">
+                    <i class="fa-solid fa-wifi px-1"></i><i class="fa-solid fa-wheelchair-move px-1"></i><i class="fa-solid fa-spa px-1"></i>
+                </div>
+            </div>
+            <div class="px-6 py-4 mb-auto">
+                <div class="font-medium text-lg inline-block mb-2">{{ hotel.name }}</div>
+                <div class="text-gray-500 text-sm">
+                    <hr class="my-2">
+                    <div class="mb-2 pl-1 max-w-xs">{{ hotel.description }}</div>
+                    <div class="mb-2 pl-1">{{ hotel.location }}</div>
+                    <div class="mb-2 pl-1">{{ " · ".join(hotel.services) }}</div>
+                    <div class="pl-1 ">Осталось номеров: {{ hotel.number_of_rooms_left }} из {{hotel.rooms_quantity}}</div>
+                </div>
+            </div>
+            <div class="py-3 bg-gray-100 flex justify-center items-center">
                         <!-- <div>
                             от
                             <span class="font-bold text-3xl">25 999</span>
                         </div> -->
                         <!-- <span class="mb-5">за 12 ночей</span> -->
-                        <button onclick="exploreHotelRooms('{{ hotel.id }}')"
-                                class="inline-block text-xl text-white bg-slate-400 hover:bg-blue-300 px-3 py-1 rounded-full ">
-                            выбрать номер
-                        </button>
-                    </div>
-                </div>
-            {% endfor %}
+                <button onclick="exploreHotelRooms('{{ hotel.id }}')"
+                        class="text-xl text-white bg-slate-400 hover:bg-blue-300 transition duration-300 px-3 py-1 rounded-2xl ">
+                    Выбрать номер
+                </button>
+            </div>
         </div>
+
+        {% endfor %}
+    </div>
     {% endif %}
 </div>
 </body>
