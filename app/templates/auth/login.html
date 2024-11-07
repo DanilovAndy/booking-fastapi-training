@@ -10,7 +10,7 @@
         <div>
             <div class="flex flex-col items-start text-xl mb-5">
                 <label for="email" class="mb-1">Email</label>
-                <input class="border-b-2 border-blue-300 mb-4 outline-none" id="email" name="email" type="text" value="" placeholder="Email">
+                <input class="border-b-2 border-blue-300 mb-4 outline-none" id="email" name="email" type="email" value="" placeholder="Email">
 
                 <label for="password" class="mb-1">Пароль</label>
                 <input class="border-b-2 border-blue-300 outline-none" id="password" name="password" type="password" value="" placeholder="********">
@@ -18,7 +18,7 @@
             </div>
         </div>
         <button onclick="loginUser(getElementById('email').value, getElementById('password').value)" class="text-xl bg-blue-200 hover:bg-blue-300 px-3 py-2 rounded-2xl mb-3">Войти</button>
-        <span>
+        <span class="mb-10">
             Не зарегистрированы?
             <a href="/register"
                class="underline text-blue-600 hover:text-blue-800">

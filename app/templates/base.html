@@ -7,6 +7,7 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <link rel="icon" href="{{ url_for('static', path='images/logo.png') }}">
     <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/js/all.min.js"></script>
     <script src="{{ url_for('static', path='js/base_script.js') }}" ></script>
     <script>
         /*Toggle dropdown list*/
@@ -49,7 +50,7 @@
 <nav class="bg-slate-400 mb-10 pt-2 pb-1 px-1 mt-0 h-auto fixed w-full z-20 top-0">
     <div class="flex justify-between px-8 py-3 text-2xl">
       <ul>
-          <li><a href="/hotels?location=&date_to=2024-05-01&date_from=2024-04-17" class="text-white text-3xl font-bold">ОТЕЛИ</a></li>
+          <li><a href="/hotels?location=&date_to=2024-05-01&date_from=2024-04-17" class="text-white text-3xl font-bold"><i class="fa-solid fa-plane"></i> ОТЕЛИ</a></li>
       </ul>
       <ul class="flex gap-x-5">
           {% if cur_user != None %}
@@ -57,7 +58,7 @@
               <button onclick="toggleDD('dropdownMenu')" class="drop-button text-white"> {{ cur_user }}
               </button>
               <div id="dropdownMenu" class="dropdownlist absolute bg-stone-50 text-black right-3 mt-6 p-3 overflow-auto z-30 invisible">
-                  <a href="#" class="drop-button p-2 text-xl hover:bg-slate-300 text-sm no-underline hover:text-white hover:no-underline block"><i class="fa fa-user fa-fw"></i>Мои бронирования</a>
+                  <a href="#" class="drop-button p-2 text-xl hover:bg-slate-300 text-sm no-underline hover:text-white hover:no-underline block"><i class="fa fa-user fa-fw"></i> Мои бронирования</a>
                   <a href="#" class="drop-button p-2 text-xl hover:bg-slate-300 text-black text-sm no-underline hover:text-white hover:no-underline block"><i class="fa fa-cog fa-fw"></i> Настройки</a>
                   <div class="border border-white-800"></div>
                   <a style="cursor: pointer" onclick="logoutUser()" class="drop-button p-2 text-xl hover:bg-slate-300 text-black text-sm no-underline hover:text-white hover:no-underline block"><i class="fas fa-sign-out-alt fa-fw"></i> Выйти из профиля</a>
