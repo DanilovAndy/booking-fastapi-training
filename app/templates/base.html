@@ -6,6 +6,7 @@
           content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <link rel="icon" href="{{ url_for('static', path='images/logo.png') }}">
+    <script src="https://cdn.jsdelivr.net/npm/flowbite@2.5.2/dist/flowbite.min.js"></script>
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/js/all.min.js"></script>
     <script src="{{ url_for('static', path='js/base_script.js') }}" ></script>
@@ -45,9 +46,9 @@
     {% block head %}{% endblock %}
     <title>Отели</title>
 </head>
-<body class="font-sans leading-normal tracking-normal mt-28">
-<header>
-<nav class="bg-slate-400 mb-10 pt-2 pb-1 px-1 mt-0 h-auto fixed w-full z-20 top-0">
+<body class="font-sans leading-normal tracking-normal">
+<header class="md:sticky md:top-0 md:z-20">
+<nav class="bg-slate-400 mb-10 pt-2 pb-1 px-1 h-auto w-full">
     <div class="flex justify-between px-8 py-3 text-2xl">
       <ul>
           <li><a href="/hotels?location=&date_to=2024-05-01&date_from=2024-04-17" class="text-white text-3xl font-bold"><i class="fa-solid fa-plane"></i> ОТЕЛИ</a></li>
