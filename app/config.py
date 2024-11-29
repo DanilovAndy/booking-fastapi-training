@@ -23,6 +23,9 @@ class Settings(BaseSettings):
     TEST_DB_PASS: str
     TEST_DB_NAME: str
 
+    ACCESS_TOKEN_EXPIRES_MINUTES: int
+    REFRESH_TOKEN_EXPIRES_MINUTES: int
+
     SMTP_HOST: str
     SMTP_PORT: int
     SMTP_USER: str
