@@ -6,7 +6,17 @@
         const searchInputValue = document.getElementById("operation_search").value;
         const dateFromSelectValue = document.getElementById("date_from").value;
         const dateToSelectValue = document.getElementById("date_to").value;
-        window.location.href = `/hotels?location=${searchInputValue}&date_from=${dateFromSelectValue}&date_to=${dateToSelectValue}`;
+
+        const checkedBoxes = document.querySelectorAll('input[name="filters"]:checked');
+        const flags = Array.from(checkedBoxes).map(box => box.value);
+
+        const flagParams = flags.map(flag => `${flag}=true`).join('&');
+        const searchParams = `location=${searchInputValue}&date_from=${dateFromSelectValue}&date_to=${dateToSelectValue}`;
+
+        const queryParams = [searchParams, flagParams].filter(param => param).join('&');
+
+        const fullUrl = `/hotels?${queryParams}`;
+        window.location.href = fullUrl;
     }
 
     const exploreHotelRooms = (hotel_id) => {
