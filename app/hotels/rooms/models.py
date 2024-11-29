@@ -1,4 +1,4 @@
-from sqlalchemy import Column, Integer, ForeignKey, String, JSON
+from sqlalchemy import Column, Integer, ForeignKey, String, JSON, Boolean
 from sqlalchemy.orm import relationship
 
 from app.database import Base
@@ -15,6 +15,14 @@ class Rooms(Base):
     services = Column(JSON, nullable=True)
     quantity = Column(Integer, nullable=False)
     image_link = Column(String)
+    beds = Column(Integer, nullable=False, default=1, server_default='1')
+    wifi = Column(Boolean, nullable=False, default=False, server_default='False')
+    condi = Column(Boolean, nullable=False, default=False, server_default='False')
+    spa = Column(Boolean, nullable=False, default=False, server_default='False')
+    pets = Column(Boolean, nullable=False, default=False, server_default='False')
+    guests = Column(Boolean, nullable=False, default=False, server_default='False')
+    corridor = Column(Boolean, nullable=False, default=False, server_default='False')
+    helper = Column(Boolean, nullable=False, default=False, server_default='False')
 
     hotel = relationship("Hotels", back_populates="rooms")
     booking = relationship("Bookings", back_populates="room")
